@@ -15,7 +15,8 @@ export class MUnderover implements ToLaTeXConverter {
     const base = mathMLElementToLaTeXConverter(children[0] ?? new VoidMathMLElement()).convert();
     const underContent = mathMLElementToLaTeXConverter(children[1] ?? new VoidMathMLElement()).convert();
     const overContent = mathMLElementToLaTeXConverter(children[2] ?? new VoidMathMLElement()).convert();
+    const normalizedBase = base === '' ? '{}' : base;
 
-    return `${base}_{${underContent}}^{${overContent}}`;
+    return `${normalizedBase}_{${underContent}}^{${overContent}}`;
   }
 }
