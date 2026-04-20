@@ -16,7 +16,7 @@ export class MMultiscripts implements ToLaTeXConverter {
     const prescripts = this._prescriptLatex();
     const postscripts = this._postscriptLatex();
     const wrappedBase = this._wrapInParenthesisIfThereIsSpace(baseContent);
-    const safeBase = wrappedBase === '' && (prescripts || postscripts) ? '{}' : wrappedBase;
+    const safeBase = wrappedBase === '' && (prescripts !== '' || postscripts !== '') ? '{}' : wrappedBase;
 
     return prescripts + safeBase + postscripts;
   }
