@@ -13,8 +13,12 @@ export class MMultiscripts implements ToLaTeXConverter {
     const { children } = this._mathmlElement;
 
     const baseContent = mathMLElementToLaTeXConverter(children[0] ?? new VoidMathMLElement()).convert();
+    const prescripts = this._prescriptLatex();
+    const postscripts = this._postscriptLatex();
+    const wrappedBase = this._wrapInParenthesisIfThereIsSpace(baseContent);
+    const safeBase = wrappedBase === '' && (prescripts || postscripts) ? '{}' : wrappedBase;
 
-    return this._prescriptLatex() + this._wrapInParenthesisIfThereIsSpace(baseContent) + this._postscriptLatex();
+    return prescripts + safeBase + postscripts;
   }
 
   private _prescriptLatex(): string {

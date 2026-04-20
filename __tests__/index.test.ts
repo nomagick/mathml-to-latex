@@ -411,6 +411,16 @@ describe('#convert', () => {
         expect(result).toBe('\\frac{x}{3}');
       });
     });
+
+    describe('containing one child', () => {
+      it('uses available child as numerator and empty string as denominator', () => {
+        const mathml = mathmlStrings.mfracWithOneChild;
+
+        const result = MathMLToLaTeX.convert(mathml);
+
+        expect(result).toBe('\\frac{x}{}');
+      });
+    });
   });
 
   describe('given math string with mroot', () => {
@@ -431,6 +441,16 @@ describe('#convert', () => {
         const result = MathMLToLaTeX.convert(mathml);
 
         expect(result).toBe('\\sqrt[3]{x + 2}');
+      });
+    });
+
+    describe('containing one child', () => {
+      it('uses available child as content and empty string as root index', () => {
+        const mathml = mathmlStrings.mrootWithOneChild;
+
+        const result = MathMLToLaTeX.convert(mathml);
+
+        expect(result).toBe('\\sqrt[]{x}');
       });
     });
   });
@@ -759,6 +779,16 @@ describe('#convert', () => {
         expect(result).toBe('x^{2}');
       });
     });
+
+    describe('msup tag contains one child', () => {
+      it('uses available child as base and empty string as exponent', () => {
+        const mathml = mathmlStrings.msupWithOneChild;
+
+        const result = MathMLToLaTeX.convert(mathml);
+
+        expect(result).toBe('x^{}');
+      });
+    });
   });
 
   describe('given math string with msub tag', () => {
@@ -811,6 +841,16 @@ describe('#convert', () => {
         expect(result).toBe('x_{2}');
       });
     });
+
+    describe('msub tag contains one child', () => {
+      it('uses available child as base and empty string as subscript', () => {
+        const mathml = mathmlStrings.msubWithOneChild;
+
+        const result = MathMLToLaTeX.convert(mathml);
+
+        expect(result).toBe('x_{}');
+      });
+    });
   });
 
   describe('given math string with msubsup tag', () => {
@@ -837,6 +877,16 @@ describe('#convert', () => {
         const result = MathMLToLaTeX.convert(mathml);
 
         expect(result).toBe('\\int_{0}^{1}');
+      });
+    });
+
+    describe('when it have two children', () => {
+      it('uses available children and empty string as superscript', () => {
+        const mathml = mathmlStrings.msubsupWithTwoChildren;
+
+        const result = MathMLToLaTeX.convert(mathml);
+
+        expect(result).toBe('\\int_{0}^{}');
       });
     });
   });
@@ -1046,6 +1096,16 @@ describe('#convert', () => {
         const result = MathMLToLaTeX.convert(mathml);
 
         expect(result).toBe('\\int_{0}^{\\infty}');
+      });
+    });
+
+    describe('with munderover with 2 children', () => {
+      it('uses available children and empty string as over content', () => {
+        const mathml = mathmlStrings.munderoverWithTwoChildren;
+
+        const result = MathMLToLaTeX.convert(mathml);
+
+        expect(result).toBe('\\int_{0}^{}');
       });
     });
   });

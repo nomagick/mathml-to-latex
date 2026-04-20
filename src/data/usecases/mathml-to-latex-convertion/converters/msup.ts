@@ -14,8 +14,10 @@ export class MSup implements ToLaTeXConverter {
 
     const baseChild = children[0] ?? new VoidMathMLElement();
     const exponentChild = children[1] ?? new VoidMathMLElement();
+    const base = this._handleBaseChild(baseChild);
+    const safeBase = base === '' ? '{}' : base;
 
-    return `${this._handleBaseChild(baseChild)}^${this._handleExponentChild(exponentChild)}`;
+    return `${safeBase}^${this._handleExponentChild(exponentChild)}`;
   }
 
   private _handleBaseChild(base: MathMLElement): string {

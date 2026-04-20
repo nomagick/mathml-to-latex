@@ -851,6 +851,16 @@ export const mfracWithThreeChildren = `
 </root>
 `;
 
+export const mfracWithOneChild = `
+<root>
+  <math>
+    <mfrac>
+      <mi>x</mi>
+    </mfrac>
+  </math>
+</root>
+`;
+
 export const mroot = `
 <root>
   <math>
@@ -878,6 +888,16 @@ export const mrootWithThreeChildren = `
       <mn>3</mn>
       <mn>2</mn>
     </mroot> 
+  </math>
+</root>
+`;
+
+export const mrootWithOneChild = `
+<root>
+  <math>
+    <mroot>
+      <mi>x</mi>
+    </mroot>
   </math>
 </root>
 `;
@@ -1369,6 +1389,16 @@ export const msupWithThreeChildren = `
 </root>
 `;
 
+export const msupWithOneChild = `
+<root>
+  <math>
+    <msup>
+      <mi>x</mi>
+    </msup>
+  </math>
+</root>
+`;
+
 export const msub = `
 <root>
   <math>
@@ -1441,6 +1471,16 @@ export const msubWithThreeChildren = `
 </root>
 `;
 
+export const msubWithOneChild = `
+<root>
+  <math>
+    <msub>
+      <mi>x</mi>
+    </msub>
+  </math>
+</root>
+`;
+
 export const msubsup = `
 <root>
   <math>
@@ -1477,6 +1517,17 @@ export const msubsupWithFourChildren = `
       <mn> 0 </mn>
       <mn> 1 </mn>
       <mn> 5 </mn>
+    </msubsup>
+  </math>
+</root>
+`;
+
+export const msubsupWithTwoChildren = `
+<root>
+  <math>
+    <msubsup>
+      <mo> &#x222B; </mo>
+      <mn> 0 </mn>
     </msubsup>
   </math>
 </root>
@@ -1747,6 +1798,17 @@ export const munderoverWithThreeChildren = `
       <mn> 0 </mn>
       <mi> &#x221E; </mi>
       <mi> 1 </mi>
+    </munderover>
+  </math>
+</root>
+`;
+
+export const munderoverWithTwoChildren = `
+<root>
+  <math>
+    <munderover>
+      <mo> &#x222B;</mo>
+      <mn> 0 </mn>
     </munderover>
   </math>
 </root>

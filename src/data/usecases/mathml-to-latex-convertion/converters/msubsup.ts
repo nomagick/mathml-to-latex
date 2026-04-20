@@ -15,8 +15,10 @@ export class MSubsup implements ToLaTeXConverter {
     const baseChild = children[0] ?? new VoidMathMLElement();
     const subscriptChild = children[1] ?? new VoidMathMLElement();
     const superscriptChild = children[2] ?? new VoidMathMLElement();
+    const base = this._handleBaseChild(baseChild);
+    const safeBase = base === '' ? '{}' : base;
 
-    return `${this._handleBaseChild(baseChild)}_${this._handleSubscriptChild(subscriptChild)}^${this._handleSuperscriptChild(superscriptChild)}`;
+    return `${safeBase}_${this._handleSubscriptChild(subscriptChild)}^${this._handleSuperscriptChild(superscriptChild)}`;
   }
 
   private _handleBaseChild(base: MathMLElement): string {
