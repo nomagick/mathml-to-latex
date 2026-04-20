@@ -1039,7 +1039,7 @@ describe('#convert', () => {
     });
 
     describe('with munderover with 4 children', () => {
-      it('uses first three children, ignoring extras', () => {
+      it('uses first three children from four, ignoring extras', () => {
         const mathml = mathmlStrings.munderoverWithThreeChildren;
 
         const result = MathMLToLaTeX.convert(mathml);
