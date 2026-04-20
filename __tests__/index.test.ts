@@ -1090,8 +1090,16 @@ describe('#convert', () => {
 
     describe('with munderover with 4 children', () => {
       it('uses first three children from four, ignoring extras', () => {
-        const munderoverWithFourChildren = mathmlStrings.munderoverWithThreeChildren;
-        const mathml = munderoverWithFourChildren;
+        const mathml = `
+          <math>
+            <munderover>
+              <mo>&#x222B;</mo>
+              <mn>0</mn>
+              <mo>&#x221E;</mo>
+              <mi>x</mi>
+            </munderover>
+          </math>
+        `;
 
         const result = MathMLToLaTeX.convert(mathml);
 
