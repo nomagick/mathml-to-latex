@@ -1,7 +1,6 @@
 import { ToLaTeXConverter } from '../../../../domain/usecases/to-latex-converter';
-import { MathMLElement } from '../../../protocols/mathml-element';
+import { MathMLElement, VoidMathMLElement } from '../../../protocols/mathml-element';
 import { mathMLElementToLaTeXConverter, ParenthesisWrapper } from '../../../helpers';
-import { InvalidNumberOfChildrenError } from '../../../errors';
 
 export class MMultiscripts implements ToLaTeXConverter {
   private readonly _mathmlElement: MathMLElement;
@@ -11,14 +10,15 @@ export class MMultiscripts implements ToLaTeXConverter {
   }
 
   convert(): string {
-    const { name, children } = this._mathmlElement;
-    const childrenLength = children.length;
+    const { children } = this._mathmlElement;
 
-    if (childrenLength < 3) throw new InvalidNumberOfChildrenError(name, 3, childrenLength, 'at least');
+    const baseContent = mathMLElementToLaTeXConverter(children[0] ?? new VoidMathMLElement()).convert();
+    const prescripts = this._prescriptLatex();
+    const postscripts = this._postscriptLatex();
+    const wrappedBase = this._wrapInParenthesisIfThereIsSpace(baseContent);
+    const safeBase = wrappedBase === '' && (prescripts !== '' || postscripts !== '') ? '{}' : wrappedBase;
 
-    const baseContent = mathMLElementToLaTeXConverter(children[0]).convert();
-
-    return this._prescriptLatex() + this._wrapInParenthesisIfThereIsSpace(baseContent) + this._postscriptLatex();
+    return prescripts + safeBase + postscripts;
   }
 
   private _prescriptLatex(): string {
@@ -27,11 +27,11 @@ export class MMultiscripts implements ToLaTeXConverter {
     let sup;
 
     if (this._isPrescripts(children[1])) {
-      sub = children[2];
-      sup = children[3];
+      sub = children[2] ?? new VoidMathMLElement();
+      sup = children[3] ?? new VoidMathMLElement();
     } else if (this._isPrescripts(children[3])) {
-      sub = children[4];
-      sup = children[5];
+      sub = children[4] ?? new VoidMathMLElement();
+      sup = children[5] ?? new VoidMathMLElement();
     } else return '';
 
     const subLatex = mathMLElementToLaTeXConverter(sub).convert();
@@ -44,8 +44,8 @@ export class MMultiscripts implements ToLaTeXConverter {
     const { children } = this._mathmlElement;
     if (this._isPrescripts(children[1])) return '';
 
-    const sub = children[1];
-    const sup = children[2];
+    const sub = children[1] ?? new VoidMathMLElement();
+    const sup = children[2] ?? new VoidMathMLElement();
 
     const subLatex = mathMLElementToLaTeXConverter(sub).convert();
     const supLatex = mathMLElementToLaTeXConverter(sup).convert();

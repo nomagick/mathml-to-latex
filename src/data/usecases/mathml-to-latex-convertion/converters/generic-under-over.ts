@@ -1,7 +1,6 @@
 import { ToLaTeXConverter } from '../../../../domain/usecases/to-latex-converter';
-import { MathMLElement } from '../../../protocols/mathml-element';
+import { MathMLElement, VoidMathMLElement } from '../../../protocols/mathml-element';
 import { mathMLElementToLaTeXConverter } from '../../../helpers/mathml-element-to-latex-converter';
-import { InvalidNumberOfChildrenError } from '../../../errors';
 import { latexAccents } from '../../../../syntax/latex-accents';
 
 export class GenericUnderOver implements ToLaTeXConverter {
@@ -12,13 +11,10 @@ export class GenericUnderOver implements ToLaTeXConverter {
   }
 
   convert(): string {
-    const { name, children } = this._mathmlElement;
-    const childrenLength = children.length;
+    const { children } = this._mathmlElement;
 
-    if (childrenLength !== 2) throw new InvalidNumberOfChildrenError(name, 2, childrenLength);
-
-    const content = mathMLElementToLaTeXConverter(children[0]).convert();
-    const accent = mathMLElementToLaTeXConverter(children[1]).convert();
+    const content = mathMLElementToLaTeXConverter(children[0] ?? new VoidMathMLElement()).convert();
+    const accent = mathMLElementToLaTeXConverter(children[1] ?? new VoidMathMLElement()).convert();
 
     return this._applyCommand(content, accent);
   }
