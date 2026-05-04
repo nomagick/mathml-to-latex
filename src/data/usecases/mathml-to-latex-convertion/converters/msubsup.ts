@@ -1,7 +1,6 @@
 import { ToLaTeXConverter } from '../../../../domain/usecases/to-latex-converter';
-import { MathMLElement } from '../../../protocols/mathml-element';
+import { MathMLElement, VoidMathMLElement } from '../../../protocols/mathml-element';
 import { mathMLElementToLaTeXConverter, ParenthesisWrapper, BracketWrapper } from '../../../helpers';
-import { InvalidNumberOfChildrenError } from '../../../errors';
 
 export class MSubsup implements ToLaTeXConverter {
   private readonly _mathmlElement: MathMLElement;
@@ -11,14 +10,12 @@ export class MSubsup implements ToLaTeXConverter {
   }
 
   convert(): string {
-    const { name, children } = this._mathmlElement;
-    const childrenLength = children.length;
+    const { children } = this._mathmlElement;
+    const _void = new VoidMathMLElement();
 
-    if (childrenLength !== 3) throw new InvalidNumberOfChildrenError(name, 3, childrenLength);
-
-    const baseChild = children[0];
-    const subscriptChild = children[1];
-    const superscriptChild = children[2];
+    const baseChild = children[0] || _void;
+    const subscriptChild = children[1] || _void;
+    const superscriptChild = children[2] || _void;
 
     return `${this._handleBaseChild(baseChild)}_${this._handleSubscriptChild(subscriptChild)}^${this._handleSuperscriptChild(superscriptChild)}`;
   }

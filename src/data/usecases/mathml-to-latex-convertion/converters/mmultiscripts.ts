@@ -1,7 +1,6 @@
 import { ToLaTeXConverter } from '../../../../domain/usecases/to-latex-converter';
-import { MathMLElement } from '../../../protocols/mathml-element';
+import { MathMLElement, VoidMathMLElement } from '../../../protocols/mathml-element';
 import { mathMLElementToLaTeXConverter, ParenthesisWrapper } from '../../../helpers';
-import { InvalidNumberOfChildrenError } from '../../../errors';
 
 export class MMultiscripts implements ToLaTeXConverter {
   private readonly _mathmlElement: MathMLElement;
@@ -11,27 +10,26 @@ export class MMultiscripts implements ToLaTeXConverter {
   }
 
   convert(): string {
-    const { name, children } = this._mathmlElement;
-    const childrenLength = children.length;
+    const { children } = this._mathmlElement;
+    const _void = new VoidMathMLElement();
 
-    if (childrenLength < 3) throw new InvalidNumberOfChildrenError(name, 3, childrenLength, 'at least');
-
-    const baseContent = mathMLElementToLaTeXConverter(children[0]).convert();
+    const baseContent = mathMLElementToLaTeXConverter(children[0] || _void).convert();
 
     return this._prescriptLatex() + this._wrapInParenthesisIfThereIsSpace(baseContent) + this._postscriptLatex();
   }
 
   private _prescriptLatex(): string {
     const { children } = this._mathmlElement;
+    const _void = new VoidMathMLElement();
     let sub;
     let sup;
 
     if (this._isPrescripts(children[1])) {
-      sub = children[2];
-      sup = children[3];
+      sub = children[2] || _void;
+      sup = children[3] || _void;
     } else if (this._isPrescripts(children[3])) {
-      sub = children[4];
-      sup = children[5];
+      sub = children[4] || _void;
+      sup = children[5] || _void;
     } else return '';
 
     const subLatex = mathMLElementToLaTeXConverter(sub).convert();
@@ -42,10 +40,11 @@ export class MMultiscripts implements ToLaTeXConverter {
 
   private _postscriptLatex(): string {
     const { children } = this._mathmlElement;
+    const _void = new VoidMathMLElement();
     if (this._isPrescripts(children[1])) return '';
 
-    const sub = children[1];
-    const sup = children[2];
+    const sub = children[1] || _void;
+    const sup = children[2] || _void;
 
     const subLatex = mathMLElementToLaTeXConverter(sub).convert();
     const supLatex = mathMLElementToLaTeXConverter(sup).convert();

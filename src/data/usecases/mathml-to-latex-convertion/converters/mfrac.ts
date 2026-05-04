@@ -1,6 +1,5 @@
 import { ToLaTeXConverter } from '../../../../domain/usecases/to-latex-converter';
-import { MathMLElement } from '../../../protocols/mathml-element';
-import { InvalidNumberOfChildrenError } from '../../../errors';
+import { MathMLElement, VoidMathMLElement } from '../../../protocols/mathml-element';
 import { ParenthesisWrapper, mathMLElementToLaTeXConverter } from '../../../helpers';
 
 export class MFrac implements ToLaTeXConverter {
@@ -11,13 +10,11 @@ export class MFrac implements ToLaTeXConverter {
   }
 
   convert(): string {
-    const { children, name } = this._mathmlElement;
-    const childrenLength = children.length;
+    const { children } = this._mathmlElement;
+    const _void = new VoidMathMLElement();
 
-    if (childrenLength !== 2) throw new InvalidNumberOfChildrenError(name, 2, childrenLength);
-
-    const num = mathMLElementToLaTeXConverter(children[0]).convert();
-    const den = mathMLElementToLaTeXConverter(children[1]).convert();
+    const num = mathMLElementToLaTeXConverter(children[0] || _void).convert();
+    const den = mathMLElementToLaTeXConverter(children[1] || _void).convert();
 
     if (this._isBevelled()) return `${this._wrapIfMoreThanOneChar(num)}/${this._wrapIfMoreThanOneChar(den)}`;
 

@@ -1,6 +1,5 @@
 import { MathMLToLaTeX } from '../src';
 import * as mathmlStrings from './mocks/mathmlStrings';
-import { InvalidNumberOfChildrenError } from '../src/data/errors/invalid-number-of-children';
 
 describe('#convert', () => {
   describe('given math string with mi tag', () => {
@@ -404,12 +403,12 @@ describe('#convert', () => {
     });
 
     describe('containing three children', () => {
-      it('throws InvalidNumberOfChildrenError', () => {
+      it('converts using first two children', () => {
         const mathml = mathmlStrings.mfracWithThreeChildren;
 
-        const result = () => MathMLToLaTeX.convert(mathml);
+        const result = MathMLToLaTeX.convert(mathml);
 
-        expect(result).toThrow(new InvalidNumberOfChildrenError('mfrac', 2, 3));
+        expect(result).toMatch('\\frac{x}{3}');
       });
     });
   });
@@ -426,12 +425,12 @@ describe('#convert', () => {
     });
 
     describe('containing three children', () => {
-      it('throws InvalidNumberOfChildrenError', () => {
+      it('converts using first two children', () => {
         const mathml = mathmlStrings.mrootWithThreeChildren;
 
-        const result = () => MathMLToLaTeX.convert(mathml);
+        const result = MathMLToLaTeX.convert(mathml);
 
-        expect(result).toThrow(new InvalidNumberOfChildrenError('mroot', 2, 3));
+        expect(result).toMatch('\\sqrt[3]{x + 2}');
       });
     });
   });
@@ -752,12 +751,12 @@ describe('#convert', () => {
     });
 
     describe('msup tag contains three children', () => {
-      it('throws InvalidNumberOfChildrenError', () => {
+      it('converts using first two children', () => {
         const mathml = mathmlStrings.msupWithThreeChildren;
 
-        const result = () => MathMLToLaTeX.convert(mathml);
+        const result = MathMLToLaTeX.convert(mathml);
 
-        expect(result).toThrow(new InvalidNumberOfChildrenError('msup', 2, 3));
+        expect(result).toMatch('x^{2}');
       });
     });
   });
@@ -804,12 +803,12 @@ describe('#convert', () => {
     });
 
     describe('msub tag contains three children', () => {
-      it('throws InvalidNumberOfChildrenError', () => {
+      it('converts using first two children', () => {
         const mathml = mathmlStrings.msubWithThreeChildren;
 
-        const result = () => MathMLToLaTeX.convert(mathml);
+        const result = MathMLToLaTeX.convert(mathml);
 
-        expect(result).toThrow(new InvalidNumberOfChildrenError('msub', 2, 3));
+        expect(result).toMatch('x_{2}');
       });
     });
   });
@@ -832,12 +831,12 @@ describe('#convert', () => {
     });
 
     describe('when it have four children', () => {
-      it('throws InvalidNumberOfChildrenError', () => {
+      it('converts using first three children', () => {
         const mathml = mathmlStrings.msubsupWithFourChildren;
 
-        const result = () => MathMLToLaTeX.convert(mathml);
+        const result = MathMLToLaTeX.convert(mathml);
 
-        expect(result).toThrow(new InvalidNumberOfChildrenError('msubsup', 3, 4));
+        expect(result).toMatch('\\int_{0}^{1}');
       });
     });
   });
@@ -976,12 +975,12 @@ describe('#convert', () => {
     });
 
     describe('where there are three children', () => {
-      it('throws InvalidNumberOfChildrenError', () => {
+      it('converts using first two children', () => {
         const mathml = mathmlStrings.moverThreeChildren;
 
-        const result = () => MathMLToLaTeX.convert(mathml);
+        const result = MathMLToLaTeX.convert(mathml);
 
-        expect(result).toThrowError(new InvalidNumberOfChildrenError('mover', 2, 3));
+        expect(result).toMatch('\\overset{+}{x + y + z}');
       });
     });
   });
@@ -1040,12 +1039,12 @@ describe('#convert', () => {
     });
 
     describe('with munderover with 4 children', () => {
-      it('throws InvalidNumberOfChildErrors', () => {
+      it('converts using first three children', () => {
         const mathml = mathmlStrings.munderoverWithThreeChildren;
 
-        const result = () => MathMLToLaTeX.convert(mathml);
+        const result = MathMLToLaTeX.convert(mathml);
 
-        expect(result).toThrow(new InvalidNumberOfChildrenError('munderover', 3, 4));
+        expect(result).toMatch('\\int_{0}^{\\infty}');
       });
     });
   });
@@ -1112,12 +1111,12 @@ describe('#convert', () => {
     });
 
     describe('with less than 3 children', () => {
-      it('throws InvalidNumberOfChildrenError', () => {
+      it('converts using available children with empty placeholders', () => {
         const mathml = mathmlStrings.mmultiscriptWithTwoChildren;
 
-        const result = () => MathMLToLaTeX.convert(mathml);
+        const result = MathMLToLaTeX.convert(mathml);
 
-        expect(result).toThrow(new InvalidNumberOfChildrenError('mmultiscripts', 3, 2, 'at least'));
+        expect(result).toMatch('N a');
       });
     });
 
