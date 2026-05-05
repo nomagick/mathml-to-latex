@@ -1,6 +1,6 @@
 {
   "name": "@nomagick/mathml-to-latex",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "A JavaScript tool to convert mathml string to LaTeX string, permissive version.",
   "main": "dist/bundle.min.js",
   "types": "dist/index.d.ts",
@@ -48,7 +48,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@nomagick/mathml-to-latex": "^1.5.1",
-    "@xmldom/xmldom": "^0.8.10"
+    "@xmldom/xmldom": "^0.8.13"
   }
 }
